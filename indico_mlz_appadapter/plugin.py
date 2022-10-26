@@ -39,21 +39,12 @@ from indico_mlz_appadapter.blueprint import blueprint
 from indico_mlz_appadapter.forms import EventSettingsForm
 
 
-class MLZappadaptererPlugin(IndicoPlugin):
-    """MLZ registration appadapter API plugin
+class MLZAppAdapterPlugin(IndicoPlugin):
+    """MLZ appadapter API plugin
 
-    Allow for registration data appadapter to external systems
-
-    It offers both old-style HTTP-API (http API token authentication and new-style REST API (OAuth2 authentication)
-    endpoints for appadaptering single registrations or list of all registrations.
-
-    HTTP API:
-        /appadapter/mlzevent/<eventid>.{json|xml}
-        /appadapter/mlzevent/<eventid>/registrant/<registrant_id>.{json|xml}
 
     REST API:
-        /mlz/appadapter/<eventid>/registrants
-        /mlz/appadapter/<eventid>/registrants/<registrantid>
+        /mlz/appadapter/<eventid>/appimage
     """
 
     acl_settings = {'managers'}
@@ -63,13 +54,12 @@ class MLZappadaptererPlugin(IndicoPlugin):
     def init(self):
         super().init()
         self.connect(signals.menu.items, self.extend_event_management_menu, sender='event-management-sidemenu')
-        HTTPAPIHook.register(MLZappadapterAppImageHook)
 
     def get_blueprints(self):
         yield blueprint
 
     def extend_event_management_menu(self, sender, event, **kwargs):
-        if event.can_manage(session.user) and is_feature_enabled(event, 'fzjappadapter'):
+        if event.can_manage(session.user) and is_feature_enabled(event, 'mlzappadapter'):
             yield SideMenuItem('MLZappadaptersettings',
                                _('MLZ appadapter settings'),
                                url_for_plugin('mlz_appadapter.configure', event),

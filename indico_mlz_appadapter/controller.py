@@ -30,34 +30,39 @@ from flask import jsonify, request, session
 from indico.modules.events.models.events import Event
 from indico.web.rh import RH, oauth_scope
 from werkzeug.exceptions import Forbidden
+from . import mlzappadapter_event_settings
 
 
-
-@oauth_scope('registrants')
+@oauth_scope('any')
 class RHMLZappadapterBase(RH):
     """RESTful registrant API base class"""
 
     CSRF_ENABLED = False
     FLAT = False
-    
 
     def _process_args(self):
         self.event_id = request.view_args['event_id']
         self.event = Event.get(self.event_id, is_deleted=False)
 
     def _check_access(self):
-        try:
-            ok = self.event.can_manage(session.user, permission='registration')
-        except TypeError:
-            ok = self.event.can_manage(session.user)
-
+        ok = self.event.is_public or self.event.can_display(session.user)
         if not ok:
             raise Forbidden()
 
 
 class RHappadapterAppImage(RHMLZappadapterBase):
-    """ appadapter a list of registrations for an event"""
-
+    """ appadapter: image for app as url"""
     def _process_GET(self):
-        data = {'appimage': 'https://....'}
+        data = {}
+        url = mlzappadapter_event_settings.get(self.event, 'appimage')
+        data['appimage'] = url or self.event.external_logo_url or self.event.category.effective_icon_url
+        return jsonify(data)
+
+
+class RHappadapterAppImage(RHMLZappadapterBase):
+    """ appadapter: news url and status"""
+    def _process_GET(self):
+        data = {}
+        url = mlzappadapter_event_settings.get(self.event, 'news')
+        data['newsurl'] = url or None
         return jsonify(data)

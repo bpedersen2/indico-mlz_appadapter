@@ -28,11 +28,12 @@ from __future__ import unicode_literals
 
 from indico.core.plugins import IndicoPluginBlueprint
 
-from indico_mlz_appadapter.controller import RHappadapterAppImage
+from indico_mlz_appadapter.controller import RHappadapterAppImage, RHappadapterAppNews
 
 blueprint = IndicoPluginBlueprint('mlz_appadapter', __name__, url_prefix='/mlz/appadapter')
 # API
-blueprint.add_url_rule('/<int:event_id>/appimage', 'api_registrants', RHappadapterAppImage)
+blueprint.add_url_rule('/<int:event_id>/appimage', 'app_image', RHappadapterAppImage)
+blueprint.add_url_rule('/<int:event_id>/news', 'app_news', RHappadapterAppNews)
 
 from indico_mlz_appadapter.controllers import RHMLZappadapterManageEvent
 

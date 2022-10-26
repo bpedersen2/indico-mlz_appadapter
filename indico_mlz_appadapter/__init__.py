@@ -7,6 +7,7 @@ _ = make_bound_gettext('mlzappadapter')
 
 mlzappadapter_event_settings = EventSettingsProxy('mlzappadapter', {
     'appimage': None,
+    'newsurl': None,
 })
 
 
