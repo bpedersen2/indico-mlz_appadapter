@@ -59,7 +59,7 @@ class RHappadapterAppImage(RHMLZappadapterBase):
         return jsonify(data)
 
 
-class RHappadapterAppImage(RHMLZappadapterBase):
+class RHappadapterAppNews(RHMLZappadapterBase):
     """ appadapter: news url and status"""
     def _process_GET(self):
         data = {}
