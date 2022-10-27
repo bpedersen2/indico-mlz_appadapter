@@ -65,4 +65,5 @@ class RHappadapterAppNews(RHMLZappadapterBase):
         data = {}
         url = mlzappadapter_event_settings.get(self.event, 'newsurl')
         data['newsurl'] = url or None
+        data['lastUpdated'] = mlzappadapter_event_settings.get(self.event, 'news_updated')
         return jsonify(data)

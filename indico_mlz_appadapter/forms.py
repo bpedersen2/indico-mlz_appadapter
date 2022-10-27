@@ -15,13 +15,18 @@
 # along with Indico; if not, see <http://www.gnu.org/licenses/>.
 
 from indico.web.forms.base import IndicoForm
-from wtforms.fields import StringField
+from wtforms.fields import URLField
 from wtforms.validators import DataRequired
+from indico.web.forms.fields import IndicoDateTimeField
 
 from indico_mlz_appadapter import _
 
 APPIMAGE_DESC = """URL for MLZ app teaser image"""
+NEWSURL_DESC = """URL for MLZ app news page"""
+NEWSUPDATED_DESC = """Time when news was last updated"""
 
 
 class EventSettingsForm(IndicoForm):
-    appimage = StringField(_('App image url'), [DataRequired()], description=APPIMAGE_DESC)
+    appimage = URLField(_('App image url'), [DataRequired()], description=APPIMAGE_DESC)
+    newsurl = URLField(_('News page url'), [DataRequired()], description=NEWSURL_DESC)
+    newsupdated = IndicoDateTimeField(_('News last updated'), [DataRequired()], description=NEWSUPDATED_DESC)
