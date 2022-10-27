@@ -23,10 +23,10 @@ from indico_mlz_appadapter import _
 
 APPIMAGE_DESC = """URL for MLZ app teaser image"""
 NEWSURL_DESC = """URL for MLZ app news page"""
-NEWSUPDATED_DESC = """Time when news was last updated"""
+NEWSUPDATED_DESC = """Time when news was last updated format: YYYY-MM-DD hh:mm"""
 
 
 class EventSettingsForm(IndicoForm):
     appimage = URLField(_('App image url'), [], description=APPIMAGE_DESC)
     newsurl = URLField(_('News page url'), [], description=NEWSURL_DESC)
-    news_updated = IndicoDateTimeField(_('News last updated'), [], description=NEWSUPDATED_DESC)
+    news_updated = StringField(_('News last updated'), [], description=NEWSUPDATED_DESC)
