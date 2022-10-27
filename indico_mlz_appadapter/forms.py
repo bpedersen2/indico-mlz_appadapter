@@ -27,6 +27,6 @@ NEWSUPDATED_DESC = """Time when news was last updated"""
 
 
 class EventSettingsForm(IndicoForm):
-    appimage = URLField(_('App image url'), [DataRequired()], description=APPIMAGE_DESC)
-    newsurl = URLField(_('News page url'), [DataRequired()], description=NEWSURL_DESC)
-    newsupdated = IndicoDateTimeField(_('News last updated'), [DataRequired()], description=NEWSUPDATED_DESC)
+    appimage = URLField(_('App image url'), [], description=APPIMAGE_DESC)
+    newsurl = URLField(_('News page url'), [], description=NEWSURL_DESC)
+    news_updated = IndicoDateTimeField(_('News last updated'), [], description=NEWSUPDATED_DESC)
