@@ -15,9 +15,7 @@
 # along with Indico; if not, see <http://www.gnu.org/licenses/>.
 
 from indico.web.forms.base import IndicoForm
-from wtforms.fields import URLField
-from wtforms.validators import DataRequired
-from indico.web.forms.fields import IndicoDateTimeField
+from wtforms.fields import URLField, StringField
 
 from indico_mlz_appadapter import _
 
