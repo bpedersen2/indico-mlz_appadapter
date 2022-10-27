@@ -63,6 +63,6 @@ class RHappadapterAppNews(RHMLZappadapterBase):
     """ appadapter: news url and status"""
     def _process_GET(self):
         data = {}
-        url = mlzappadapter_event_settings.get(self.event, 'news')
+        url = mlzappadapter_event_settings.get(self.event, 'newsurl')
         data['newsurl'] = url or None
         return jsonify(data)
