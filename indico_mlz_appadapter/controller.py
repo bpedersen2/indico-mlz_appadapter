@@ -66,7 +66,12 @@ class RHappadapterAppImage(RHMLZappadapterBase):
     def _process_GET(self):
         data = {}
         url = mlzappadapter_event_settings.get(self.event, 'appimage')
-        data['appimage'] = url or self.event.external_logo_url or self.event.category.effective_icon_url
+        try:
+            logourl = self.event.external_logo_url
+        except TypeError:
+            logourl = None
+
+        data['appimage'] = url or logourl or self.event.category.effective_icon_url
         return jsonify(data)
 
 
