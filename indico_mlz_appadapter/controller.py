@@ -27,6 +27,7 @@
 from __future__ import unicode_literals
 
 from flask import flash, jsonify, redirect, request, session
+from indico.core.config import config
 from indico.modules.events.management.controllers import RHManageEventBase
 from indico.modules.events.models.events import Event
 from indico.web.flask.util import url_for
@@ -71,10 +72,13 @@ class RHappadapterAppImage(RHMLZappadapterBase):
         except TypeError:
             logourl = None
         try:
-            catlogourl = self.event.category.effective_icon_url
+            catlogourl = self.event.category.logo_url
+            catlogourl = f'{config.data["BASE_URL"]}{catlogourl}'
+
         except TypeError:
             try:
-                catlogourl = self.event.category.logo_url
+                catlogourl = self.event.category.effective_icon_url
+                catlogourl = f'{config.data["BASE_URL"]}{catlogourl}'
             except TypeError:
                 catlogourl = None
         data['appimage'] = url or logourl or catlogourl
