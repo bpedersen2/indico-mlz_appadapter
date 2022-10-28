@@ -70,8 +70,14 @@ class RHappadapterAppImage(RHMLZappadapterBase):
             logourl = self.event.external_logo_url
         except TypeError:
             logourl = None
-
-        data['appimage'] = url or logourl or self.event.category.effective_icon_url
+        try:
+            catlogourl = self.event.category.effective_icon_url
+        except TypeError:
+            try:
+                catlogourl = self.event.category.logo_url
+            except TypeError:
+                catlogourl = None
+        data['appimage'] = url or logourl or catlogourl
         return jsonify(data)
 
 
