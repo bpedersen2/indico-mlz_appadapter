@@ -26,10 +26,19 @@
 
 from __future__ import unicode_literals
 
-from flask import jsonify, request, session
+from flask import flash, jsonify, redirect, request, session
+from indico.modules.events.management.controllers import RHManageEventBase
 from indico.modules.events.models.events import Event
+from indico.web.flask.util import url_for
+from indico.web.forms.base import FormDefaults
 from indico.web.rh import RH, oauth_scope
+from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.exceptions import Forbidden
+
+from indico_mlz_appadapter import _, mlzappadapter_event_settings
+from indico_mlz_appadapter.forms import EventSettingsForm
+from indico_mlz_appadapter.views import WPMLZappadapterEventMgmt
+
 from . import mlzappadapter_event_settings
 
 
@@ -43,6 +52,8 @@ class RHMLZappadapterBase(RH):
     def _process_args(self):
         self.event_id = request.view_args['event_id']
         self.event = Event.get(self.event_id, is_deleted=False)
+        if not self.event:
+            raise NoResultFound
 
     def _check_access(self):
         ok = self.event.is_public or self.event.can_display(session.user)
@@ -67,3 +78,21 @@ class RHappadapterAppNews(RHMLZappadapterBase):
         data['newsurl'] = url or None
         data['lastUpdated'] = mlzappadapter_event_settings.get(self.event, 'news_updated')
         return jsonify(data)
+
+
+
+
+
+class RHMLZappadapterManageEvent(RHManageEventBase):
+    EVENT_FEATURE = 'mlzappadapter'
+
+    def _process(self):
+        form = EventSettingsForm(prefix='mlzappadapter-',
+                                 event=self.event,
+                                 obj=FormDefaults(**mlzappadapter_event_settings.get_all(self.event)))
+        if form.validate_on_submit():
+
+            mlzappadapter_event_settings.set_multi(self.event, form.data)
+            flash(_('Settings saved'), 'success')
+            return redirect(url_for('.configure', self.event))
+        return WPMLZappadapterEventMgmt.render_template('mlzappadapter_manage.html', self.event, form=form)

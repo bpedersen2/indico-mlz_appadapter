@@ -15,7 +15,7 @@
 # along with Indico; if not, see <http://www.gnu.org/licenses/>.
 
 from indico.web.forms.base import IndicoForm
-from wtforms.fields import URLField, StringField
+from wtforms.fields import StringField, URLField
 
 from indico_mlz_appadapter import _
 

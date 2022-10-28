@@ -34,7 +34,6 @@ from indico.web.http_api import HTTPAPIHook
 from indico.web.menu import SideMenuItem
 
 from indico_mlz_appadapter import _
-from indico_mlz_appadapter.api import MLZappadapterAppImageHook
 from indico_mlz_appadapter.blueprint import blueprint
 from indico_mlz_appadapter.forms import EventSettingsForm
 
